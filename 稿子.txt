@@ -1,0 +1,637 @@
+米环 8 小程序表盘制作教程
+
+看本教程前须保证以下的前置条件
+
+1.入门 JavaScript
+ps: 可以看米环 7 小程序开发教程的第一部分
+
+目录
+
+一、api 详解
+
+二、使用模拟器和打包工具
+
+三、使用 GiveMeFive 提供的 Zepp OS 引擎开发
+
+一、api 详解
+目前，小米手环 8 的开发文档只有米坛官方提供的，并且嘛，不太详细
+虽然给了示例表盘，但是懒得翻
+在 GiveMeFive 发的小程序模拟器中的一些模拟函数可以帮助我们很快地入门开发
+下面是一些解析
+
+一、控件创建
+
+1.图片控件
+create_img(id: any, src: any, x: any, y: any)
+这是要传入的值
+按这样写：
+create_img(0, "bg", 0, 0);
+不用跟.png 这类的后缀
+id 不用说，类似于 Zepp OS 的 const 定义 id
+声明一下，貌似 id 可以直接按照 Zepp OS 的方式定义
+src 就是图片路径
+x 和 y 也不用说，方向嘛
+
+2.按钮控件
+create_btn(id: any, x: any, y: any, w: any, h: any)
+w 和 h 是宽和高
+
+3.label 控件
+create_label(id: any, x: any, y: any, w: any, h: any, h2: any)
+h2 这个参数在里面并未调用，不明意义（总不能是 html 里面那个 h2 吧
+
+4.圆弧控件
+create_arc(id, 0, 210, 330, 0, 10, 10, timeLabel)
+分别为 id , x , y , w , h , 起始点（应该是，终止点（应该是，还有一个我不知道
+
+5.对象控件
+可以理解成 group？我不清楚
+我目前见到的创建方式只有这种：
+create_obj_with_style(0,0,0,192,490,102,0)
+也就是同时设置了样式
+我估计的 create_obj 的调用应该是这样的：
+create_obj(id: any, x: any, y: any, w: any, h: any)
+不能用别怪我（（（
+
+6.线控件
+create_line(id,0)
+第一个是 id，第二个貌似是线宽
+
+二、控件设置
+
+1.图片控件
+(1)set_img_src
+只有这一个，可以改变控件所展示的图片
+set_img_src(obj: any, src: any)
+调用方式：
+set_img_src(goalImg,"lgoal")
+第一个是 id，第二个是图片名称
+
+2.对象控件
+(1)set_obj_size
+设置对象大小
+set_obj_size(obj, 168, 168)
+后面两个所填参数分别为 x 和 y
+
+(2)set_obj_pos
+设置对象位置
+调用方式：
+set_obj_pos(id, x, y)
+
+(3)set_obj_click
+设置对象可点击事件
+调用方式：
+set_obj_click(id,func)
+func 为函数，自己改
+
+(4)set_obj_hidden
+设置对象隐藏
+调用方式：
+set_obj_hidden(id)
+
+(5)set_obj_display
+设置对象显示
+调用方式：
+set_obj_display(id)
+
+(6)set_obj_style
+设置对象和 style 绑定
+调用方式我不到
+style 咱等会讲
+
+(7)remove_obj_style
+移除对象的 style 
+顾名思义，我不到调用方式
+
+(8)set_obj_long_pressed_repeat
+设置对象可重复长按事件
+就是长按操作
+调用方式我不到
+
+(9)set_obj_pressed
+设置对象可按下事件
+调用方式我不到
+
+(10)set_obj_pressing
+设置对象可以一直按下事件
+调用方式我不到
+
+(11)set_obj_released
+设置对象释放事件
+调用方式我不到
+
+(12)set_obj_del
+删除对象
+调用方式：
+set_obj_del(id)
+
+(13)drag_event_handler
+设置对象在拖拽后的位置
+调用方式我不到
+
+(14)get_obj_x
+获取对象 x 轴坐标
+调用方式：
+get_obj_x(id)
+
+(15)get_obj_y
+获取对象 y 轴坐标
+调用方式：
+get_obj_y(id)
+
+(16)refr_obj_pos
+刷新对象位置
+调用方式：
+refr_obj_pos(id)
+
+3.label 控件
+
+(1)set_label_text
+设置 label 内容
+调用方式：
+set_label_text(id,'hello world')
+
+(2)set_label_font
+设置 label 字体 (只支持静态字库里面的字体)
+调用方式：
+set_label_font(id, 4163)
+这个静态字库是什么我不知道
+
+(3)set_label_color
+设置 label 颜色
+调用方式：
+set_label_color(id, 0x5E4B42)
+后面那个也可以是'#5E4B42'这样的
+
+(4)set_label_content_center
+设置 label 内容居中显示
+调用方式：
+set_label_content_center(id)
+
+4.圆弧控件
+
+(1)set_arc_fg_color
+设置前景色
+调用方式：
+set_arc_fg_color(id, 0x68A6EF)
+后面那个也可以是'#5E4B42'这样的
+
+(2)set_arc_fg_width
+设置前弧宽度
+调用方式：
+set_arc_fg_width(id, 6)
+
+(3)set_arc_fg_redius
+设置前弧半径
+调用方式：
+set_arc_fg_redius(id, 20)
+
+(4)set_arc_bg_color
+设置背景色
+调用方式：
+set_arc_bg_color(id, 0xBCD1EA)
+后面那个也可以是'#5E4B42'这样的
+
+(5)set_arc_bg_width
+设置背景弧宽度
+调用方式：
+set_arc_bg_width(id, 6)
+
+(6)set_arc_bg_redius
+设置背景弧半径
+调用方式：
+set_arc_bg_redius(id, 20)
+
+(7)obj_modify_value
+在 arc 上设置一个倒计时功能，实时更新 arc 的值
+调用方式：
+obj_modify_value(id, 200 , 200)
+
+5.线控件
+
+(1)set_line_point
+设置 2 个点的坐标（2 点确定一条直线）
+set_line_point(id, 120, 140)
+后面两个所填参数分别为 x 和 y
+
+(2)set_line_width
+设置线的宽度
+调用方式：
+set_line_width(id, 2)
+
+(3)set_line_color
+设置线的颜色
+调用方式：
+set_line_color(line, 0xE0, 0x7C, 0x65)
+
+(4)create_multiple_line
+创建多条线
+调用方式我不到
+
+(5)set_multiple_line_point
+设置多条线上的多个点
+调用方式我不到
+
+(6)set_line_point_num
+设置多条线中有几个点是有效的
+调用方式我不到
+
+(7)clear_multiple_line_point
+清除所有的点坐标
+调用方式我不到
+
+(8)set_line_dash_width
+设置虚线的实线长度
+调用方式我不到
+
+(9)set_line_dash_gap
+设置虚线中实线之间的 gap
+调用方式我不到
+
+6.通用方法
+(1)addEvent
+注册点击事件
+调用方式：
+addEvent(id,[7],()=>{console.log('hello world')})
+第三个是执行的函数
+第二个嘛，7 代表 click，1 代表 mousedown，8 代表 mouseup
+
+(2)registerEvent
+销毁点击事件
+调用方式：
+registerEvent(em3)
+
+(3)rotate_90_degrees
+设置对象旋转 90 度
+调用方式：
+rotate_90_degrees(id, 90, 90)
+
+(4)move_horizontal
+设置对象在 X 方向移动
+调用方式：
+move_horizontal(id, -72, 800)
+
+(5)move_vertical
+设置对象在 Y 方向移动
+调用方式：
+move_vertical(id, 90, 90)
+
+三、公共接口
+
+1.reg_event_callback
+注册事件回调函数（C 调用 JS 的接口）
+emm 不到
+
+2.get_event_src
+获取当前事件源
+emm 不到
+
+3.get_event_code
+获取当前事件 Id 
+emm 不到
+
+4.exit_game
+退出游戏
+直接 exit_game() 调用
+
+5.get_js_parent
+获取当前对象的父节点
+直接 get_js_parent() 调用方式
+
+6.my_pow
+求 x 的 y 次幂
+调用方式：
+my_pow(m,2)
+懂？
+
+7.my_sqrt
+开方函数
+调用方式：
+my_sqrt(my_pow(b,2)-4*a*c))/(2*a)
+自己悟
+
+8.rand_num
+获取一个随机数
+直接
+rand_num()
+调用
+
+9.saveDataToFile
+存数据
+调用方式：
+saveDataToFile({
+    x: 32,
+    s: 32
+})
+这样
+
+9.saveDataToFile
+存数据
+调用方式：
+saveDataToFile({
+    x: 32,
+    s: 32
+})
+这样
+
+10.readDataFromFile
+读数据
+调用方式：
+readDataFromFile({
+    x: 32,
+    s: 32
+})
+
+11.EventMap
+调用方式：
+new EventMap(0, [13],func, true)
+不太清楚这个方法的调用
+
+四、style 接口
+
+1.create_style
+创建一个 style
+我不到
+
+2.set_style_opa
+设置背景透明度
+我不到
+
+3.set_style_bg
+设置背景颜色
+我不到
+
+4.reset_style
+重置 style
+我不到
+
+二、使用模拟器和打包工具
+首先到 https://www.bandbbs.cn/threads/7079/ 这个链接去下载工具
+下载好后解压到 C 盘根目录就行
+运行 nginx.exe
+打开浏览器访问网址 http://localhost:9080/mi8js/index.html 
+ps：这一步访问不了可以看一下自己有没有解压到含有中文地址的目录或检查有没有使用谷歌内核的浏览器（如火狐可能不支持）
+在浏览器窗口按 F12 键，可以进行调试，查看错误信息
+使用教程：
+修改 JS 修改下面路径的 js 文件 nginx-1.16.0\html\mi8js\wf\images\pcob_inbin.js
+修改图片 修改下面路径的图片文件 nginx-1.16.0\html\mi8js\wf\images\
+修改后保存并刷新浏览器，就可以看到修改后的效果
+打包的话需要提前安装 java1.8 运行环境，没有的话自行谷歌下载一个
+运行 nginx-1.16.0\html\mi8js\wf\WatchfacePackTool_64.exe
+到 nginx-1.16.0\html\mi8js\wf\pack.log 去查看日志
+打包完后的结果在 nginx-1.16.0\html\mi8js\wf\wf_pack.bin
+
+三、使用 GiveMeFive 提供的 Zepp OS 引擎开发
+我哭死，在米环 8pro 的小程序中仍然能看到 hmFS 的身影
+我这里放一段 GiveMeFive 写的 Zepp OS 引擎
+var engine_timerImg;
+var engine_frameTime;
+var engine_timerInitX = -100;
+var engine_timer_src = "timer.bin";
+var engine_timeout_index = 0;
+var engine_startFlag = false;
+var engine_currentTime = 1680000000000;
+var engine_timer = {
+  cbMap: {},
+  startTimer(key, cb, interval) {
+    engine_timer.cbMap[key] = {
+      cb: cb,
+      interval: interval,
+      time: interval,
+      oneFlag: false
+    };
+  },
+  startTimeout(cb, interval) {
+    var key = "timeout" + engine_timeout_index++;
+    engine_timer.cbMap[key] = {
+      cb: cb,
+      interval: interval,
+      time: interval,
+      oneFlag: true
+    };
+    return key;
+  },
+  stopTimer(key) {
+    if (engine_timer.cbMap[key]) {
+      delete engine_timer.cbMap[key];
+    }
+  },
+  onUpdate(time) {
+    var delObj = {};
+    for (var k in engine_timer.cbMap) {
+      var obj = engine_timer.cbMap[k];
+      obj.time = obj.time - time;
+      if (obj.time <= 0) {
+        obj.cb();
+        if (obj.oneFlag) {
+          delObj[k] = true;
+        } else {
+          obj.time = obj.interval;
+        }
+      }
+    }
+    for (var k in delObj) {
+      engine_timer.stopTimer(k);
+    }
+  }
+};
+function engine_afterAnimx() {
+  engine_currentTime = engine_currentTime + engine_frameTime * 30;
+  engine_timer.onUpdate(engine_frameTime);
+  set_obj_pos(engine_timerImg, engine_timerInitX, 200);
+  refr_obj_pos(engine_timerImg);
+  move_horizontal(
+    engine_timerImg,
+    -1 * engine_frameTime + engine_timerInitX,
+    engine_frameTime
+  );
+}
+function engine_startInterval(t) {
+  if (engine_startFlag) {
+    return;
+  }
+  engine_startFlag = true;
+  engine_timerImg = create_obj_with_style(0, 0, 0, 1, 1, 102, 0);
+  engine_frameTime = t;
+  refr_obj_pos(engine_timerImg);
+  move_horizontal(
+    engine_timerImg,
+    -1 * engine_frameTime + engine_timerInitX,
+    engine_frameTime
+  );
+  var em5 = new EventMap(0, [11], engine_afterAnimx, true);
+  registerEvent(em5);
+}
+const deepCopy = function (obj) {
+  if (typeof obj !== "object") return;
+  var newObj = obj instanceof Array ? [] : {};
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      let val = obj[key];
+      newObj[key] = typeof val === "object" ? deepCopy(val) : val;
+    }
+  }
+  return newObj;
+};
+var TIMER_KEY = 1000;
+const timer = {
+  createTimer: function (delay, interval, cb, param) {
+    let key = TIMER_KEY++;
+    if (delay) {
+      engine_timer.startTimeout(function () {
+        engine_timer.startTimer(key + "", cb, interval);
+      }, delay);
+    } else {
+      engine_timer.startTimer(key + "", cb, interval);
+    }
+    engine_startInterval(1);
+    return key;
+  }
+};
+const Math = {
+  random: function () {
+    return rand_num() / 1000;
+  },
+  floor: function (f) {
+    return parseInt(f);
+  },
+  round: function (f) {
+    return parseInt(f + 0.5);
+  }
+};
+const Date = function () {};
+Date.prototype.getTime = function () {
+  return engine_currentTime;
+};
+Date.now = function () {
+  return engine_currentTime;
+};
+const hmUI = { setLayerScrolling: function () {} };
+hmUI.widget = { IMG: "IMG", GROUP: "GROUP", TEXT: "TEXT", EMPTY_BTN: "BTN" };
+hmUI.prop = { MORE: "MORE", VISIBLE: "VISIBLE", SRC: "SRC", TEXT: "TEXT" };
+hmUI.event = { CLICK_DOWN: "CLICK_DOWN", CLICK_UP: "CLICK_UP" };
+hmUI.align = { CENTER_H: "1", CENTER_V: "2", RIGHT: "3", LEFT: "4" };
+var newWidget = function (type, param, wd) {
+  var obj = { type: type, param: param, wd: wd, visible: true };
+  obj.setProperty = function (type, prop) {
+    if (type == hmUI.prop.MORE) {
+      var p = false;
+      var src = false;
+      var text = false;
+      for (var key in prop) {
+        if (key == "x" && this.param.x != prop[key]) {
+          p = true;
+        } else if (key == "y" && this.param.y != prop[key]) {
+          p = true;
+        } else if (key == "src" && this.param.src != prop[key]) {
+          src = true;
+        } else if (key == "text" && this.param.text != prop[key]) {
+          text = true;
+        }
+        this.param[key] = prop[key];
+      }
+      if (this.type == hmUI.widget.IMG) {
+        if (p) {
+          set_obj_pos(this.wd, this.param.x, this.param.y);
+        }
+        if (src) {
+          set_img_src(this.wd, this.param.src);
+        }
+      } else if (this.type == hmUI.widget.TEXT) {
+        if (text) {
+          set_label_text(this.wd, this.param.text + "");
+        } else {
+          set_label_text(this.wd, " ");
+        }
+      }
+    } else if (type == hmUI.prop.VISIBLE) {
+      if (prop) {
+        set_obj_display(this.wd);
+      } else {
+        set_obj_hidden(this.wd);
+      }
+      this.visible = prop;
+    } else if (type == hmUI.prop.SRC) {
+      if (this.param.src != prop) {
+        this.param.src = prop;
+        set_img_src(this.wd, this.param.src);
+      }
+    } else if (type == hmUI.prop.TEXT) {
+      if (this.param.text != prop) {
+        this.param.text = prop;
+        if (this.param.text) {
+          set_label_text(this.wd, this.param.text + "");
+        } else {
+          set_label_text(this.wd, " ");
+        }
+      }
+    }
+  };
+  obj.addEventListener = function (event, cb) {
+    if (this.type == hmUI.widget.EMPTY_BTN) {
+      if (event == hmUI.event.CLICK_DOWN) {
+        var events2 = [1];
+        addEvent(this.wd, events2, function () {
+          cb(1);
+        });
+      } else if (event == hmUI.event.CLICK_UP) {
+        var events2 = [8];
+        addEvent(this.wd, events2, function () {
+          cb(8);
+        });
+      }
+    } else {
+      var events2 = [7];
+      addEvent(this.wd, events2, function () {
+        cb(8);
+      });
+    }
+  };
+  return obj;
+};
+hmUI.createWidget = function (type, param) {
+  if (type == hmUI.widget.IMG) {
+    var img = create_img(0, param.src, param.x, param.y);
+    return newWidget(type, param, img);
+  } else if (type == hmUI.widget.GROUP) {
+    return hmUI;
+  } else if (type == hmUI.widget.TEXT) {
+    var label = create_label(0, param.x, param.y, param.w, param.h, param.h);
+    set_label_font(label, 4163);
+    set_label_color(label, param.color);
+    if (param.align_h == hmUI.align.CENTER_H) {
+      set_label_content_align(label, 2);
+    } else if (param.align_h == hmUI.align.RIGHT) {
+      set_label_content_align(label, 3);
+    } else {
+      set_label_content_align(label, 1);
+    }
+    if (param.text) {
+      set_label_text(label, param.text + "");
+    }
+    return newWidget(type, param, label);
+  } else if (type == hmUI.widget.EMPTY_BTN) {
+    var wd = create_btn(0, param.x, param.y, param.w, param.h, param.h);
+    return newWidget(type, param, wd);
+  } else {
+    error("UNKNOW TYPE " + type);
+  }
+};
+const hmFS = {
+  SysProGetInt64: function (key) {
+    var saved = {};
+    saved[key] = 0;
+    readDataFromFile(saved);
+    if (saved && saved[key]) {
+      return saved[key];
+    }
+    return 0;
+  },
+  SysProSetInt64: function (key, value) {
+    var saved = {};
+    readDataFromFile(saved);
+    saved[key] = value;
+    saveDataToFile(saved);
+  }
+};
+直接 cv 到你的项目里，然后按照 Zepp OS 的语法写就行了

@@ -1,0 +1,20 @@
+配置文件路径 G:\米8表盘\build\MI8EBOOK\wfDef.json
+图片路径 G:\米8表盘\build\MI8EBOOK\images\
+AOD图片路径 G:\米8表盘\build\MI8EBOOK\images_aod\
+读取配置 
+配置转换 
+开始打包 
+加载所有单个图片 
+加载所有图列表
+加载所有JS图片 
+加载预览图 
+组装头信息 
+5
+8
+组装图片 
+组装AOD 
+加载所有单个图片 
+加载所有图列表
+组装头信息 
+文件输出路径 G:\米8表盘\build\MI8EBOOK\wf_pack.bin
+success

@@ -1,0 +1,11 @@
+file not find!java.lang.NullPointerException
+	at com.givemefive.mi8wf.util.BaseUtil.fileToBytes(BaseUtil.java:156)
+	at com.givemefive.mi8wf.pack.WfWriter.readAllJSImages(WfWriter.java:356)
+	at com.givemefive.mi8wf.pack.WfWriter.packageWatchface(WfWriter.java:159)
+	at com.givemefive.mi8wf.main.WfPackMain.main(WfPackMain.java:42)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at com.exe4j.runtime.LauncherEngine.launch(LauncherEngine.java:84)
+	at com.exe4j.runtime.WinLauncher.main(WinLauncher.java:94)
